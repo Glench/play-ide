@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en-US" prefix="og: http://ogp.me/ns#">
+
+    <head>
+        <title>Python Play</title>
+        <link href="node_modules/codemirror/lib/codemirror.css" rel="stylesheet">
+        <link href="node_modules/codemirror/theme/mdn-like.css" rel="stylesheet">
+        <link href="node_modules/codemirror/theme/xq-light.css" rel="stylesheet">
+        <link href="node_modules/codemirror/theme/neat.css" rel="stylesheet">
+        <link href="custom-play.css" rel="stylesheet">
+        <style type="text/css">
+            html, body {
+                margin: 0;
+                padding: 0;
+                font-size: 13px;
+                font-family: Helvetica, Arial, sans-serif;
+                line-height: 1;
+            }
+            body {
+                display: flex;
+            }
+            table {
+                border-collapse: collapse;
+                border-spacing: none;
+            }
+            p {
+                margin: 0;
+            }
+
+            #commands h1 {
+                font-size: 14px;
+                cursor: pointer;
+                text-decoration: none;
+                margin: 18px 0 8px 0;
+            }
+            #commands h1:hover {
+                text-decoration: underline;
+            }
+            #commands a {
+                font-family: monospace;
+                display: block;
+                color: black;
+                margin-left: 8px;
+                padding: 4px 2px;
+                text-decoration: none;
+            }
+            #commands a:hover {
+                background-color: #ccc;
+            }
+            #output {
+                color: white;
+                padding: 10px;
+                line-height: 1.2;
+                background-color: black;
+                font-family: monospace;
+            }
+            #output pre {
+              /*white-space: normal;*/
+            }
+            #output br {
+                line-height: 2.5;
+            }
+            .CodeMirror {
+                height: 94vh;
+            }
+        </style>
+        <!-- <link href="" rel="stylesheet"> -->
+
+        <!--
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@glenchsite" />
+        <meta name="twitter:creator" content="@glench" />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="http://glench.com/DeepListeningAtTheRecurseCenter/" />
+        <meta property="og:title" content="Deep Listening at the Recurse Center" />
+        <meta property="og:description" content="Helping programmers become more self-directed through meditative listening." />
+        <meta property="og:image" content="http://glench.com/DeepListeningAtTheRecurseCenter/icon.png" />
+        -->
+
+    </head>
+    <body>
+
+        <div id="commands" style="margin-top: 32px; padding-left: 3px; height: 94vh; overflow: auto; width:195px;">
+            <div>
+                <h1>New Sprite -</h1>
+                <a href="#null" command="image = play.new_image(image=None, x=0, y=0, size=100, angle=0, transparency=100)">new_image()</a>
+                <a href="#null" command="text = play.new_text(words='hi :)', x=0, y=0, font=None, font_size=50, color='black', angle=0, transparency=100)">new_text()</a>
+                <a href="#null" command="box = play.new_box(color='black', x=0, y=0, width=100, height=200, border_color='light blue', border_width=0, angle=0, transparency=100, size=100)">new_box()</a>
+                <a href="#null" command="circle = play.new_circle(color='black', x=0, y=0, radius=100, border_color='light blue', border_width=0, transparency=100, size=100, angle=0)">new_circle()</a>
+                <a href="#null" command="line = play.new_line(color='black', x=0, y=0, length=None, angle=None, thickness=1, x1=None, y1=None, transparency=100, size=100)">new_line()</a>
+            </div>
+            <div>
+                <h1>Sprite Commands -</h1>
+                <a href="#null" command="${sprite}.move(10)">move(10)</a>
+                <a href="#null" command="${sprite}.turn(10)">turn(10)</a>
+                <a href="#null" command="${sprite}.go_to(play.mouse)">go_to(position)</a>
+                <a href="#null" command="${sprite}.go_to(x=0, y=0)">go_to(x=0, y=0)</a>
+                <a href="#null" command="${sprite}.point_towards(play.mouse)">point_towards(position)</a>
+                <a href="#null" command="${sprite}.hide()">hide()</a>
+                <a href="#null" command="${sprite}.show()">show()</a>
+                <a href="#null" command="clone = ${sprite}.clone()">clone()</a>
+                <a href="#null" command="${sprite}.remove()">remove()</a>
+            </div>
+        </div>
+
+        <div style="text-align: right; margin: 0 10px; height: 99vh; max-width: 50%; line-height: 1.25;">
+            <button style="margin: 10px;">start program</button>
+            <div id="editor" style="text-align: left; border: 1px solid #ccc;"></div>
+        </div>
+
+        <div id="output" style="max-width: 30%">
+            <h2>Program Output</h2>
+            <pre style="width: 100%; overflow: auto; height: 100%; "></pre>
+        </div>
+
+
+        <script src="node_modules/codemirror/lib/codemirror.js"></script>
+<script>
+    const starting_template = `import play # this should be the first line in your program
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+play.start_program() # this should be the last line in your program`;
+</script>
+
+<!--
+
+    TODO:
+        - syntax highlighting
+        - keep indent level
+        - paste command on current line if current line is blank
+
+        - control
+        - sprite properties
+        - keyboard
+        - mouse
+        - physics
+        - screen
+        - other
+
+        - on start, open file that was previously saved
+
+        - images to choose from
+        - color picker
+        - test installing / opening
+
+IDE ideas:
+    - add helpful comment about any code appearing below play.start_program() not running. I made this mistake and it was confusing. I also made the mistake of forgetting to include play.start_program() which made a window appear then disappear.
+    - if pasting in event code (e.g. @play.when_key_pressed async def do(key)), make the indent level all the way to the left
+    - if pasting in sprite code (e.g. hide()), find the last defined sprite before the cursor and call the method on that.
+    - if command doesn't have visible effect (i.e. is_hidden), print it or create a conditional (if sprite.is_hidden: print("the sprite is hidden"))
+    - if pasting in awaitable code (e.g. await play.timer(seconds=1.0)), somehow make sure it's in an async function
+    - if possible, always paste full working example code that will do something visible
+
+-->
+
+
+<script type="text/javascript">
+    const $ = require('jquery');
+    const CodeMirror = require('codemirror');
+    require("./node_modules/codemirror/mode/python/python.js") // syntax highlighting
+    const React = require('react');
+    const ReactDOM = require('react-dom');
+    const fs = require('fs');
+    const { spawn } = require('child_process');
+
+    const play_commands = require('./commands') // category -> [list of commands {command, description}]
+
+    main_editor = CodeMirror(document.querySelector('#editor'), {
+        value: starting_template,
+        mode: 'python',
+        lineNumbers: true,
+        lineWrapping: true,
+        styleActiveLine: true,
+        indentUnit: 4,
+        theme: 'custom-play', // mdn-like
+        matchBrackets: true,
+        showCursorWhenSelecting: true,
+        inputStyle: 'contenteditable',
+    });
+    main_editor.getDoc().setCursor({line: 3})
+    main_editor.on('change', function(cm) {
+        save_file()
+    })
+
+
+    // show/hide collapsing sections
+    $('#commands h1').on('click', function(evt) {
+        var $header = $(evt.target)
+        var $container = $header.parent()
+
+        var $links = $container.find('*').not('h1')
+
+        if ($links.filter(':hidden').length > 0) {
+           $links.show() 
+           $header.text($header.text().replace('+', '-'))
+        } else {
+           $links.hide() 
+           $header.text($header.text().replace('-', '+'))
+        }
+    });
+
+    function get_last_sprite_name() {
+        var doc = main_editor.getDoc();
+        var cursor_line = doc.getCursor().line;
+
+        var lines_till_cursor = doc.getValue().split('\n').slice(0, cursor_line)
+        var last_sprite_line = lines_till_cursor.filter(function(line) {
+            return line.includes('play.new_')
+        }).pop()
+
+        if (!last_sprite_line) { return null }
+
+        return last_sprite_line.split('=')[0].trim()
+    }
+    // clicking code to paste
+    $('#commands a').on('click', function(evt) {
+        evt.preventDefault();
+        var $link = $(evt.target);
+        var command = $link.attr('command');
+        var doc = main_editor.getDoc();
+        var cursor = doc.getCursor();
+        cursor.ch = 1e10
+        var sprite = get_last_sprite_name() || 'sprite';
+        doc.replaceRange(`\n${command.replace('${sprite}', sprite)}\n`, cursor);
+        start_program()
+    })
+
+
+
+    // starting/stopping program
+
+    function save_file() {
+        fs.writeFileSync("program.py", main_editor.getValue())
+    }
+
+    var button = document.querySelector('button');
+    var output_element = document.querySelector('#output pre');
+    var program = null;
+
+    function reset() {
+        program = null;
+        button.innerText = 'start program';
+    }
+
+    function stop_program() {
+        if (program) {
+            program.stdin.pause();
+            program.kill()
+        }
+        reset()
+    }
+    function start_program() {
+        stop_program();
+
+        output_element.innerText = '';
+        save_file()
+
+        program = spawn('python3', ['-u', 'program.py']) // -u runs in unbuffered mode
+        program.on('exit', function() {
+            reset()
+        })
+        program.stdout.on('data', (data) => {
+            output_element.innerText += data.toString();
+            // console.log('stdout', data.toString())
+        })
+        program.stderr.on('data', (error_data) => {
+            output_element.innerText += error_data.toString();
+            // console.log('error', error_data.toString())
+        })
+
+        button.innerText = 'stop program'
+    }
+    button.addEventListener('click', function (e) {
+        if (program) {
+            stop_program()
+        } else {
+            start_program()
+        }
+    }, false);
+
+
+</script>
+    </body>
+</html>

@@ -1,0 +1,12 @@
+.cm-s-custom-play span.cm-comment { color: #a86; }
+.cm-s-custom-play span.cm-keyword { line-height: 1em; color: blue; }
+.cm-s-custom-play span.cm-string { color: red; }
+.cm-s-custom-play span.cm-builtin { line-height: 1em; color: #077; }
+.cm-s-custom-play span.cm-special { line-height: 1em; color: #0aa; }
+.cm-s-custom-play span.cm-variable { color: black; }
+.cm-s-custom-play span.cm-number, .cm-s-custom-play span.cm-atom { color: #3a3; }
+.cm-s-custom-play span.cm-meta { color: #555; }
+.cm-s-custom-play span.cm-link { color: #3a3; }
+
+.cm-s-custom-play .CodeMirror-activeline-background { background: #e8f2ff; }
+.cm-s-custom-play .CodeMirror-matchingbracket { outline:1px solid grey; color:black !important; }
