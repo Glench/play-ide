@@ -101,6 +101,22 @@
                 <a href="#null" command="clone = ${sprite}.clone()">clone()</a>
                 <a href="#null" command="${sprite}.remove()">remove()</a>
             </div>
+            <div>
+                <h1>Control -</h1>
+<!--         '@repeat_forever',
+        '@when_program_starts',
+        'play.repeat(10)',
+        'play.animate()',
+ -->               
+                <a href="#null" command="@play.repeat_forever
+async def do():
+    print('hi')">@repeat_forever</a>
+                <a href="#null" command="@play.when_program_starts
+async def do():
+    print('hi')">@when_program_starts</a>
+                <a href="#null" command="for count in play.repeat(10):
+    print(count)">repeat 10 times</a>
+            </div>
         </div>
 
         <div style="text-align: right; margin: 0 10px; height: 99vh; max-width: 50%; line-height: 1.25;">
@@ -108,7 +124,7 @@
             <div id="editor" style="text-align: left; border: 1px solid #ccc;"></div>
         </div>
 
-        <div id="output" style="max-width: 30%">
+        <div id="output" style="max-width: 30%; height: 99vh;">
             <h2>Program Output</h2>
             <pre style="width: 100%; overflow: auto; height: 100%; "></pre>
         </div>
@@ -141,9 +157,9 @@ play.start_program() # this should be the last line in your program`;
 <!--
 
     TODO:
-        - syntax highlighting
         - keep indent level
-        - paste command on current line if current line is blank
+        - paste command on current line if current line is blank and command doesn't start with (paste in sprite.x)
+        - drag and drop text from parts bin
 
         - control
         - sprite properties
@@ -276,10 +292,12 @@ IDE ideas:
             reset()
         })
         program.stdout.on('data', (data) => {
+            output_element.scrollTop = 1e6;
             output_element.innerText += data.toString();
             // console.log('stdout', data.toString())
         })
         program.stderr.on('data', (error_data) => {
+            output_element.scrollTop = 1e6;
             output_element.innerText += error_data.toString();
             // console.log('error', error_data.toString())
         })
