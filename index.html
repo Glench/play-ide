@@ -63,6 +63,12 @@
             .CodeMirror {
                 height: 94vh;
             }
+
+            #commands b {
+                display: block;
+                margin-left: 10px;
+                margin-top: 15px;
+            }
         </style>
         <!-- <link href="" rel="stylesheet"> -->
 
@@ -81,6 +87,7 @@
     <body>
 
         <div id="commands" style="margin-top: 32px; padding-left: 3px; height: 94vh; overflow: auto; width:195px;">
+            <div><input id="start-program-option" type="checkbox" checked="checked"> <label for="start-program-option">Start program when command clicked?</label></div>
             <div>
                 <h1>New Sprite -</h1>
                 <a href="#null" command="image = play.new_image(image=None, x=0, y=0, size=100, angle=0, transparency=100)">new_image()</a>
@@ -91,8 +98,8 @@
             </div>
             <div>
                 <h1>Sprite Commands -</h1>
-                <a href="#null" command="${sprite}.move(10)">move(10)</a>
-                <a href="#null" command="${sprite}.turn(10)">turn(10)</a>
+                <a href="#null" command="${sprite}.move(100)">move(100)</a>
+                <a href="#null" command="${sprite}.turn(45)">turn(45)</a>
                 <a href="#null" command="${sprite}.go_to(play.mouse)">go_to(position)</a>
                 <a href="#null" command="${sprite}.go_to(x=0, y=0)">go_to(x=0, y=0)</a>
                 <a href="#null" command="${sprite}.point_towards(play.mouse)">point_towards(position)</a>
@@ -103,20 +110,140 @@
             </div>
             <div>
                 <h1>Control -</h1>
-<!--         '@repeat_forever',
-        '@when_program_starts',
-        'play.repeat(10)',
-        'play.animate()',
- -->               
                 <a href="#null" command="@play.repeat_forever
 async def do():
-    print('hi')">@repeat_forever</a>
+    print('repeating forever!')">@repeat_forever</a>
                 <a href="#null" command="@play.when_program_starts
 async def do():
-    print('hi')">@when_program_starts</a>
+    print('this runs just when the program starts!')">@when_program_starts</a>
                 <a href="#null" command="for count in play.repeat(10):
     print(count)">repeat 10 times</a>
             </div>
+
+            <div id="sprite-info">
+                <h1>Sprite Info -</h1>
+                <a href="#null" command="${sprite}.x = 100">sprite.x</a>
+                <a href="#null" command="${sprite}.y = 100">sprite.y</a>
+                <a href="#null" command="${sprite}.angle = 45">sprite.angle</a>
+                <a href="#null" command="${sprite}.transparency = 50">sprite.transparency</a>
+                <a href="#null" command="${sprite}.size = 300">sprite.size</a>
+                <a href="#null" command="${sprite}.is_hidden = True">sprite.is_hidden</a>
+                <a href="#null" command="${sprite}.is_shown = False">sprite.is_shown</a>
+                <a href="#null" command="${sprite}.left = -200">sprite.left</a>
+                <a href="#null" command="${sprite}.right = 200">sprite.right</a>
+                <a href="#null" command="${sprite}.top = 200">sprite.top</a>
+                <a href="#null" command="${sprite}.bottom = -200">sprite.bottom</a>
+
+                <b>Other info</b>
+                <a href="#null" command="${sprite}.width">sprite.width</a>
+                <a href="#null" command="${sprite}.height">sprite.height</a>
+                <a href="#null" command="print(${sprite}.distance_to(play.mouse))">sprite.distance_to(other)</a>
+                <a href="#null" command="print(${sprite}.distance_to(x=100, y=100))">sprite.distance_to(x=100,y=100)</a>
+                <a href="#null" command="if ${sprite}.is_clicked:
+    ${sprite}.turn(30)">sprite.is_clicked</a>
+                <a href="#null" command="if ${sprite}.is_touching(play.mouse):
+    ${sprite}.turn(30)">sprite.is_touching(play.mouse)</a>
+
+                <b>Image sprites</b>
+                <a href="#null" command="${sprite}.image">sprite.image</a>
+
+                <b>Text sprites</b>
+                <a href="#null" command="${sprite}.words = 'hiya'">sprite.words</a>
+                <a href="#null" command="${sprite}.font = 'Arial.ttf'">sprite.font</a>
+                <a href="#null" command="${sprite}.font_size = '40">sprite.font_size</a>
+                <a href="#null" command="${sprite}.color = 'red'">sprite.color</a>
+
+                <b>Box sprites</b>
+                <a href="#null" command="${sprite}.color = 'dark blue'">sprite.color</a>
+                <a href="#null" command="${sprite}.width = 50">sprite.width</a>
+                <a href="#null" command="${sprite}.height = 50">sprite.height</a>
+                <a href="#null" command="${sprite}.border_width">sprite.border_width</a>
+                <a href="#null" command="${sprite}.border_color">sprite.border_color</a>
+
+                <b>Circle sprites</b>
+                <a href="#null" command="${sprite}.color = 'dark blue'">sprite.color</a>
+                <a href="#null" command="${sprite}.radius = 100">sprite.radius</a>
+                <a href="#null" command="${sprite}.border_width = 5">sprite.border_width</a>
+                <a href="#null" command="${sprite}.border_color = 'red'">sprite.border_color</a>
+
+                <b>Line sprites</b>
+                <a href="#null" command="${sprite}.color = 'blue'">sprite.color</a>
+                <a href="#null" command="${sprite}.length = 200">sprite.length</a>
+                <a href="#null" command="${sprite}.angle = 45">sprite.angle</a>
+                <a href="#null" command="${sprite}.x1 = -100">sprite.x1</a>
+                <a href="#null" command="${sprite}.y1 = -100">sprite.y1</a>
+
+
+            </div>
+
+            <div>
+                <h1>Mouse -</h1>
+                <a href="#null" command="@${sprite}.when_clicked
+async def do():
+    ${sprite}.turn(30)">@sprite.when_clicked</a>
+                <a href="#null" command="@play.when_mouse_clicked
+async def do():
+    ${sprite}.go_to(play.mouse)">@play.when_mouse_clicked</a>
+                <a href="#null" command="@play.when_click_released
+async def do():
+    ${sprite}.go_to(play.mouse)">@play.when_click_released</a>
+                <a href="#null" command="print(play.mouse.x)">play.mouse.x</a>
+                <a href="#null" command="print(play.mouse.y)">play.mouse.y</a>
+                <a href="#null" command="if play.mouse.is_clicked:
+    print('mouse is clicked!')">play.mouse.is_clicked</a>
+                <a href="#null" command="if play.mouse.is_touching(${sprite}):
+    print('mouse is touching sprite!')">play.mouse.is_touching(sprite)</a>
+            </div>
+
+            <div>
+                <h1>Keyboard -</h1>
+                <a href="#null" command="@play.when_key_pressed('space')
+async def do(key):
+    print('space key pressed!')">@play.when_key_pressed()</a>
+                <a href="#null" command="if play.key_is_pressed('up'):
+    print('up key pressed!')">play.key_is_pressed()</a>
+                <a href="#null" command="@play.when_any_key_pressed
+async def do(key):
+    print(key, 'key pressed')">@play.when_any_key_pressed</a>
+                <a href="#null" command="@play.when_key_released('space')
+async def do(key):
+    print('space key released!')">@play.when_key_released</a>
+                <a href="#null" command="@play.when_any_key_released
+async def do(key):
+    print(key, 'key released!')">@play.when_any_key_released</a>
+            </div>
+
+            <div>
+                <h1>Physics -</h1>
+
+                <a href="#null" command="${sprite}.start_physics(can_move=True, stable=False, x_speed=0, y_speed=0, obeys_gravity=True, bounciness=1, mass=10, friction=0.1)">sprite.start_physics()</a>
+                <a href="#null" command="${sprite}.stop_physics()">sprite.stop_physics()</a>
+                <a href="#null" command="${sprite}.physics.can_move = False">sprite.physics.can_move</a>
+                <a href="#null" command="${sprite}.physics.stable = True">sprite.physics.stable</a>
+                <a href="#null" command="${sprite}.physics.x_speed = 10">sprite.physics.x_speed</a>
+                <a href="#null" command="${sprite}.physics.y_speed = 10">sprite.physics.y_speed</a>
+                <a href="#null" command="${sprite}.physics.obeys_gravity = False">sprite.physics.obeys_gravity</a>
+                <a href="#null" command="${sprite}.physics.bounciness = 0.2">sprite.physics.bounciness</a>
+                <a href="#null" command="${sprite}.physics.mass = 50">sprite.physics.mass</a>
+                <a href="#null" command="${sprite}.physics.friction = 1">sprite.physics.friction</a>
+                <a href="#null" command="${sprite}.physics.pause()">sprite.physics.pause()</a>
+                <a href="#null" command="${sprite}.physics.unpause()">sprite.physics.unpause()</a>
+                <a href="#null" command="play.set_gravity(0)">play.set_gravity()</a>
+            </div>
+
+            <div>
+                <h1>Other commands -</h1>
+                <a href="#null" command="play.random_color()">play.random_color()</a>
+                <a href="#null" command="play.random_number(lowest=0, highest=100)">play.random_number()</a>
+                <a href="#null" command="${sprite}.go_to(play.random_position())">play.random_position()</a>
+                <a href="#null" command="for sprite in play.all_sprites:
+    print(sprite)">play.all_sprites</a>
+                <a href="#null" command="for count in play.repeat(90):
+    ${sprite}.turn(1)
+    await play.animate()">play.animate()</a>
+            </div>
+
+
         </div>
 
         <div style="text-align: right; margin: 0 10px; height: 99vh; max-width: 50%; line-height: 1.25;">
@@ -132,7 +259,7 @@ async def do():
 
         <script src="node_modules/codemirror/lib/codemirror.js"></script>
 <script>
-    const starting_template = `import play # this should be the first line in your program
+    const starting_template = `import play # this is the first line in your program
 
 
 
@@ -151,15 +278,15 @@ async def do():
 
 
 
-play.start_program() # this should be the last line in your program`;
+play.start_program() # this is the last line in your program`;
 </script>
 
 <!--
 
     TODO:
         - keep indent level
-        - paste command on current line if current line is blank and command doesn't start with (paste in sprite.x)
-        - drag and drop text from parts bin
+        - paste command on current line if current line is blank and command doesn't start with newline (paste in sprite.x)
+        - drag and drop text from parts bin (sarah did this by accident!)
 
         - control
         - sprite properties
@@ -208,6 +335,10 @@ IDE ideas:
         matchBrackets: true,
         showCursorWhenSelecting: true,
         inputStyle: 'contenteditable',
+        extraKeys: {
+            Tab: (cm) => cm.execCommand("indentMore"),
+            "Shift-Tab": (cm) => cm.execCommand("indentLess"),
+        },
     });
     main_editor.getDoc().setCursor({line: 3})
     main_editor.on('change', function(cm) {
@@ -220,7 +351,13 @@ IDE ideas:
         var $header = $(evt.target)
         var $container = $header.parent()
 
-        var $links = $container.find('*').not('h1')
+        show_hide($container)
+    });
+    $('#commands #sprite-info h1').click() // start with this one collapsed since it's so long
+
+    function show_hide($div) {
+        var $header = $div.find('h1');
+        var $links = $div.find('*').not('h1')
 
         if ($links.filter(':hidden').length > 0) {
            $links.show() 
@@ -229,7 +366,8 @@ IDE ideas:
            $links.hide() 
            $header.text($header.text().replace('-', '+'))
         }
-    });
+    }
+
 
     function get_last_sprite_name() {
         var doc = main_editor.getDoc();
@@ -237,7 +375,7 @@ IDE ideas:
 
         var lines_till_cursor = doc.getValue().split('\n').slice(0, cursor_line)
         var last_sprite_line = lines_till_cursor.filter(function(line) {
-            return line.includes('play.new_')
+            return line.includes('play.new_') || line.includes('.clone(')
         }).pop()
 
         if (!last_sprite_line) { return null }
@@ -253,8 +391,10 @@ IDE ideas:
         var cursor = doc.getCursor();
         cursor.ch = 1e10
         var sprite = get_last_sprite_name() || 'sprite';
-        doc.replaceRange(`\n${command.replace('${sprite}', sprite)}\n`, cursor);
-        start_program()
+        doc.replaceRange(`\n${command.replace(/\$\{sprite\}/g, sprite)}\n`, cursor);
+        if ($('#start-program-option').is(':checked')) {
+            start_program()
+        }
     })
 
 
@@ -277,7 +417,7 @@ IDE ideas:
     function stop_program() {
         if (program) {
             program.stdin.pause();
-            program.kill()
+            program.kill('SIGKILL')
         }
         reset()
     }
