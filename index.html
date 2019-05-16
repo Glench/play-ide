@@ -95,6 +95,8 @@
                 <a href="#null" command="box = play.new_box(color='black', x=0, y=0, width=100, height=200, border_color='light blue', border_width=0, angle=0, transparency=100, size=100)">new_box()</a>
                 <a href="#null" command="circle = play.new_circle(color='black', x=0, y=0, radius=100, border_color='light blue', border_width=0, transparency=100, size=100, angle=0)">new_circle()</a>
                 <a href="#null" command="line = play.new_line(color='black', x=0, y=0, length=None, angle=None, thickness=1, x1=None, y1=None, transparency=100, size=100)">new_line()</a>
+                <br />
+                <a href="#null" command="play.set_backdrop('light blue')">play.set_backdrop()</a>
             </div>
             <div>
                 <h1>Sprite Commands -</h1>
@@ -112,7 +114,7 @@
                 <h1>Control -</h1>
                 <a href="#null" command="@play.repeat_forever
 async def do():
-    print('repeating forever!')">@repeat_forever</a>
+    print('repeating forever!')" style="font-weight: bold; color: blue">@repeat_forever</a>
                 <a href="#null" command="@play.when_program_starts
 async def do():
     print('this runs just when the program starts!')">@when_program_starts</a>
@@ -183,34 +185,34 @@ async def do():
     ${sprite}.turn(30)">@sprite.when_clicked</a>
                 <a href="#null" command="@play.when_mouse_clicked
 async def do():
-    ${sprite}.go_to(play.mouse)">@play.when_mouse_clicked</a>
+    ${sprite}.go_to(play.mouse)">@when_mouse_clicked</a>
                 <a href="#null" command="@play.when_click_released
 async def do():
-    ${sprite}.go_to(play.mouse)">@play.when_click_released</a>
-                <a href="#null" command="print(play.mouse.x)">play.mouse.x</a>
-                <a href="#null" command="print(play.mouse.y)">play.mouse.y</a>
+    ${sprite}.go_to(play.mouse)">@when_click_released</a>
+                <a href="#null" command="print(play.mouse.x)">mouse.x</a>
+                <a href="#null" command="print(play.mouse.y)">mouse.y</a>
                 <a href="#null" command="if play.mouse.is_clicked:
-    print('mouse is clicked!')">play.mouse.is_clicked</a>
+    print('mouse is clicked!')">mouse.is_clicked</a>
                 <a href="#null" command="if play.mouse.is_touching(${sprite}):
-    print('mouse is touching sprite!')">play.mouse.is_touching(sprite)</a>
+    print('mouse is touching sprite!')">mouse.is_touching(sprite)</a>
             </div>
 
             <div>
                 <h1>Keyboard -</h1>
                 <a href="#null" command="@play.when_key_pressed('space')
 async def do(key):
-    print('space key pressed!')">@play.when_key_pressed()</a>
+    print('space key pressed!')">@when_key_pressed()</a>
                 <a href="#null" command="if play.key_is_pressed('up'):
-    print('up key pressed!')">play.key_is_pressed()</a>
+    print('up key pressed!')">key_is_pressed()</a>
                 <a href="#null" command="@play.when_any_key_pressed
 async def do(key):
-    print(key, 'key pressed')">@play.when_any_key_pressed</a>
+    print(key, 'key pressed')">@when_any_key_pressed</a>
                 <a href="#null" command="@play.when_key_released('space')
 async def do(key):
-    print('space key released!')">@play.when_key_released</a>
+    print('space key released!')">@when_key_released</a>
                 <a href="#null" command="@play.when_any_key_released
 async def do(key):
-    print(key, 'key released!')">@play.when_any_key_released</a>
+    print(key, 'key released!')">@when_any_key_released</a>
             </div>
 
             <div>
@@ -233,14 +235,14 @@ async def do(key):
 
             <div>
                 <h1>Other commands -</h1>
-                <a href="#null" command="play.random_color()">play.random_color()</a>
-                <a href="#null" command="play.random_number(lowest=0, highest=100)">play.random_number()</a>
-                <a href="#null" command="${sprite}.go_to(play.random_position())">play.random_position()</a>
+                <a href="#null" command="play.random_color()">random_color()</a>
+                <a href="#null" command="play.random_number(lowest=0, highest=100)">random_number()</a>
+                <a href="#null" command="${sprite}.go_to(play.random_position())">random_position()</a>
                 <a href="#null" command="for sprite in play.all_sprites:
-    print(sprite)">play.all_sprites</a>
+    print(sprite)">all_sprites</a>
                 <a href="#null" command="for count in play.repeat(90):
     ${sprite}.turn(1)
-    await play.animate()">play.animate()</a>
+    await play.animate()">animate()</a>
             </div>
 
 
@@ -284,17 +286,11 @@ play.start_program() # this is the last line in your program`;
 <!--
 
     TODO:
-        - keep indent level
+        - when pasting @ blocks, indent level is all the way to the left
+        - when pasting non-@ code, look for and respect last indent level
+        - if text is highlighted, replace selection with pasted in text
         - paste command on current line if current line is blank and command doesn't start with newline (paste in sprite.x)
         - drag and drop text from parts bin (sarah did this by accident!)
-
-        - control
-        - sprite properties
-        - keyboard
-        - mouse
-        - physics
-        - screen
-        - other
 
         - on start, open file that was previously saved
 
