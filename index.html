@@ -405,21 +405,25 @@ IDE ideas:
         fs.writeFileSync("program.py", main_editor.getValue())
     }
 
-    var button = document.querySelector('button');
+    var button = document.querySelector('button'); // start/stop button
     var output_element = document.querySelector('#output pre');
-    var program = null;
+    var programs = [];
 
     function reset() {
-        program = null;
-        button.innerText = 'start program';
+        programs.shift()
+        if (programs.length == 0) {
+            button.innerText = 'start program';
+        }
     }
 
     function stop_program() {
-        if (program) {
-            program.stdin.pause();
-            program.kill('SIGKILL')
+        console.log('program stopping')
+        if (programs.length) {
+            var program = programs[programs.length-1]
+            program.stdin.end();
+            program.stdout.end();
+            program.kill()
         }
-        reset()
     }
     function start_program() {
         stop_program();
@@ -427,7 +431,7 @@ IDE ideas:
         output_element.innerText = '';
         save_file()
 
-        program = spawn('python3', ['-u', 'program.py']) // -u runs in unbuffered mode
+        var program = spawn('python3', ['-u', 'program.py'], {detached: true}) // -u runs in unbuffered mode
         program.on('exit', function() {
             reset()
         })
@@ -441,11 +445,12 @@ IDE ideas:
             output_element.innerText += error_data.toString();
             // console.log('error', error_data.toString())
         })
+        programs.push(program)
 
         button.innerText = 'stop program'
     }
     button.addEventListener('click', function (e) {
-        if (program) {
+        if (programs.length) {
             stop_program()
         } else {
             start_program()
