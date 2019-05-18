@@ -114,12 +114,13 @@
                 <h1>Control -</h1>
                 <a href="#null" command="@play.repeat_forever
 async def do():
-    print('repeating forever!')" style="font-weight: bold; color: blue">@repeat_forever</a>
+    print('repeating forever!')">@repeat_forever</a>
                 <a href="#null" command="@play.when_program_starts
 async def do():
     print('this runs just when the program starts!')">@when_program_starts</a>
                 <a href="#null" command="for count in play.repeat(10):
     print(count)">repeat 10 times</a>
+                <a href="#null" command="await play.timer(seconds=1)">wait timer()</a>
             </div>
 
             <div id="sprite-info">
@@ -293,6 +294,7 @@ play.start_program() # this is the last line in your program`;
         - drag and drop text from parts bin (sarah did this by accident!)
 
         - on start, open file that was previously saved
+        - buttons should always try to create something valid
 
         - images to choose from
         - color picker
@@ -378,6 +380,24 @@ IDE ideas:
 
         return last_sprite_line.split('=')[0].trim()
     }
+    const INDENT_AMOUNT = '    ' 
+    function get_indent() {
+        // returns number of spaces or tabs or whatever at the beginning of the first non-blank line
+        var doc = main_editor.getDoc();
+        var cursor_line = doc.getCursor().line;
+        var lines_before_cursor = doc.getValue().split('\n').slice(0, cursor_line+1).reverse()
+        for (var i=0; i < lines_before_cursor.length; ++i) {
+            var line = lines_before_cursor[i];
+            if (line.trim()) {
+                var match = line.match(/^\s+/)
+                var indent = match ? match[0] : '';
+                if (line.startsWith('async') || line.startsWith('def')) {
+                    return indent + INDENT_AMOUNT;
+                }
+                return indent;
+            }
+        }
+    }
     // clicking code to paste
     $('#commands a').on('click', function(evt) {
         evt.preventDefault();
@@ -385,9 +405,19 @@ IDE ideas:
         var command = $link.attr('command');
         var doc = main_editor.getDoc();
         var cursor = doc.getCursor();
-        cursor.ch = 1e10
+        cursor.ch = 1e10 // end of line
         var sprite = get_last_sprite_name() || 'sprite';
-        doc.replaceRange(`\n${command.replace(/\$\{sprite\}/g, sprite)}\n`, cursor);
+        var indent = get_indent()
+
+        var code_to_paste = command.replace(/\$\{sprite\}/g, sprite); // fill in plausible sprite name
+
+        // indent lines, but only if they're not @decorators, which should always be unindented
+        if (indent.length > 0 && command[0] != '@') {
+            code_to_paste = code_to_paste.split('\n').map(line => indent + line).join('\n')
+        }
+
+        // doc.replaceRange(`\n${code_to_paste}\n`, cursor);
+        doc.replaceSelection(`\n${code_to_paste}\n`, cursor);
         if ($('#start-program-option').is(':checked')) {
             start_program()
         }
