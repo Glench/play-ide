@@ -125,14 +125,14 @@ async def do():
 
             <div id="sprite-info">
                 <h1>Sprite Info -</h1>
-                <a href="#null" command="${sprite}.x = 100">sprite.x</a>
-                <a href="#null" command="${sprite}.y = 100">sprite.y</a>
-                <a href="#null" command="${sprite}.angle = 45">sprite.angle</a>
-                <a href="#null" command="${sprite}.transparency = 50">sprite.transparency</a>
-                <a href="#null" command="${sprite}.size = 300">sprite.size</a>
+                <a href="#null" command="${sprite}.x += 100">sprite.x</a>
+                <a href="#null" command="${sprite}.y += 100">sprite.y</a>
+                <a href="#null" command="${sprite}.angle += 45">sprite.angle</a>
+                <a href="#null" command="${sprite}.transparency -= 40">sprite.transparency</a>
+                <a href="#null" command="${sprite}.size += 100">sprite.size</a>
                 <a href="#null" command="${sprite}.is_hidden = True">sprite.is_hidden</a>
                 <a href="#null" command="${sprite}.is_shown = False">sprite.is_shown</a>
-                <a href="#null" command="${sprite}.left = -200">sprite.left</a>
+                <a href="#null" command="${sprite}.left -= -100">sprite.left</a>
                 <a href="#null" command="${sprite}.right = 200">sprite.right</a>
                 <a href="#null" command="${sprite}.top = 200">sprite.top</a>
                 <a href="#null" command="${sprite}.bottom = -200">sprite.bottom</a>
@@ -244,6 +244,12 @@ async def do(key):
                 <a href="#null" command="for count in play.repeat(90):
     ${sprite}.turn(1)
     await play.animate()">animate()</a>
+
+                <b>Screen</b>
+                <a href="#null" command="play.screen.left">left</a>
+                <a href="#null" command="play.screen.right">right</a>
+                <a href="#null" command="play.screen.top">top</a>
+                <a href="#null" command="play.screen.bottom">bottom</a>
             </div>
 
 
@@ -287,10 +293,6 @@ play.start_program() # this is the last line in your program`;
 <!--
 
     TODO:
-        - when pasting @ blocks, indent level is all the way to the left
-        - when pasting non-@ code, look for and respect last indent level
-        - if text is highlighted, replace selection with pasted in text
-        - paste command on current line if current line is blank and command doesn't start with newline (paste in sprite.x)
         - drag and drop text from parts bin (sarah did this by accident!)
 
         - on start, open file that was previously saved
@@ -380,7 +382,7 @@ IDE ideas:
 
         return last_sprite_line.split('=')[0].trim()
     }
-    const INDENT_AMOUNT = '    ' 
+    const INDENT_AMOUNT = '    ' // 4 spaces
     function get_indent() {
         // returns number of spaces or tabs or whatever at the beginning of the first non-blank line
         var doc = main_editor.getDoc();
@@ -416,8 +418,9 @@ IDE ideas:
             code_to_paste = code_to_paste.split('\n').map(line => indent + line).join('\n')
         }
 
-        // doc.replaceRange(`\n${code_to_paste}\n`, cursor);
         doc.replaceSelection(`\n${code_to_paste}\n`, cursor);
+        doc.setCursor({line: doc.getCursor().line+2})
+
         if ($('#start-program-option').is(':checked')) {
             start_program()
         }
