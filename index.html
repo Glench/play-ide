@@ -430,9 +430,21 @@ IDE ideas:
 
     // starting/stopping program
 
+    const os = require('os')
+    const path = os.homedir()+"/Desktop/python-play-workshop/"
+    const full_file_path = path+'main.py'
+
     function save_file() {
-        fs.writeFileSync("program.py", main_editor.getValue())
+        try {
+            fs.mkdirSync(path);
+        } catch(e) {}
+        fs.writeFileSync(full_file_path, main_editor.getValue())
     }
+
+    try {
+        var file_contents = fs.readFileSync(full_file_path).toString()
+        main_editor.setValue(file_contents)
+    } catch(e) {}
 
     var button = document.querySelector('button'); // start/stop button
     var output_element = document.querySelector('#output pre');
@@ -460,7 +472,10 @@ IDE ideas:
         output_element.innerText = '';
         save_file()
 
-        var program = spawn('python3', ['-u', 'program.py'], {detached: true}) // -u runs in unbuffered mode
+        // need cwd so user can access relative file paths from their python script
+        // need env/PATH because when packaged up with electron-packager, the env/PATH doesn't have /usr/local/bin which is where python3 is
+        var program = spawn('python3', ['-u', full_file_path], {cwd: path, env: {PATH: '/usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/MacGPG2/bin'}, detached: true}) // -u runs in unbuffered mode
+
         program.on('exit', function() {
             reset()
         })
